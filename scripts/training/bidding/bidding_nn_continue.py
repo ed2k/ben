@@ -24,10 +24,10 @@ n_ftrs = X_train.shape[2]
 n_bids = y_train.shape[2]
 
 graph = tf.Graph()
-sess = tf.Session(graph=graph)
+sess = tf.compat.v1.Session(graph=graph)
 
 with graph.as_default():
-    saver = tf.train.import_meta_graph(f'{checkpoint_model}.meta')
+    saver = tf.compat.v1.train.import_meta_graph(f'{checkpoint_model}.meta')
     saver.restore(sess, checkpoint_model)
 
     seq_in = graph.get_tensor_by_name('seq_in:0')
@@ -38,14 +38,14 @@ with graph.as_default():
 
     keep_prob = graph.get_tensor_by_name('keep_prob:0')
 
-    cost = tf.losses.softmax_cross_entropy(out_bid_target, out_bid_logit)
+    cost = tf.compat.v1.losses.softmax_cross_entropy(out_bid_target, out_bid_logit)
 
     train_step = graph.get_operation_by_name('Adam')
 
     batch = Batcher(n_examples, batch_size)
     cost_batch = Batcher(n_examples, 10000)
 
-    saver = tf.train.Saver()
+    saver = tf.compat.v1.train.Saver()
 
     for i in range(start_iteration, start_iteration + n_iterations):
         x_batch, y_batch = batch.next_batch([X_train, y_train])
