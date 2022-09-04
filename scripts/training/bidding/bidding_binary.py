@@ -19,11 +19,13 @@ def load_deals(fin):
 
 def create_binary(data_it, n, out_dir):
     X = np.zeros((4 * n, 8, 159), dtype=np.float16)
-    y = np.zeros((4 * n, 8, 40), dtype=np.uint8)
+    y = np.zeros((4 * n, 8, 40), dtype=np.float16)
 
     k = 0
 
     for i, deal_data in enumerate(data_it):
+        if i >= n:
+            break
         if i % 10000 == 0:
             print(i)
 
